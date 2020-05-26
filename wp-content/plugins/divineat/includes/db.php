@@ -9,7 +9,8 @@ function dve_activation(){
         nom VARCHAR(255) NOT NULL UNIQUE, 
         entree VARCHAR(255) NOT NULL, 
         plat VARCHAR(255), 
-        dessert VARCHAR(255));"
+        dessert VARCHAR(255),
+        prix INT);"
     );
     
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}dve_orders(

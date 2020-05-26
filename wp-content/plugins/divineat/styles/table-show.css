@@ -1,0 +1,18 @@
+.admin-table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+
+.admin-table-bordered, .admin-table th, .admin-table td {
+    border: 1px solid #918F94;
+    padding: 8px;
+}
+
+.admin-table tr {
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    text-align: left;
+}
