@@ -1,3 +1,1 @@
-<?php
-
-echo '<div class="wrap"><h1>DivinEat Plugin<h1><p>Welcome !</p></div>';
+<div class="wrap"><h1>DivinEat Plugin<h1><p>Welcome !</p></div>

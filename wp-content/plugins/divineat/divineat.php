@@ -13,6 +13,7 @@ class DivinEat_Setup {
     public function __construct() {
       $this->_define_constants();
       $this->include_files();
+      $this->load();
     }
 
     private function _define_constants() {
@@ -31,7 +32,13 @@ class DivinEat_Setup {
     }
 
     private function include_files() {
+        include_once($this->_INC."db.php");
         include_once($this->_INC."functions.php");
+    }
+
+    private function load() {
+        dve_activation();
+        register_deactivation_hook(__FILE__, "dve_deactivation");
     }
 }
 
@@ -41,4 +48,3 @@ function DivinEat_init(){
     global $DIVINEAT;
     $DIVINEAT = new DivinEat_Setup();
 }
-
