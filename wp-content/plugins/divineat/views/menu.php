@@ -13,11 +13,10 @@
                 $alerts = actionMenu();
                 if(!empty($alerts)){
                     foreach($alerts as $key => $alert){
-                        $class = ($key == "success")?"alert-success":"alert-warning";
+                        $class = ($key == "success")?"notice-success":"notice-warning";
                         ?>
-                        <div class="alert <?php echo $class; ?>">
-                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                            <?php echo $alert; ?>
+                        <div class="notice <?php echo $class; ?> is-dismissible">
+                            <p><?php echo $alert; ?></p>
                         </div>
                     <?php
                     }

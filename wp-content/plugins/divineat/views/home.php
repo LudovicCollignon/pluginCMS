@@ -9,24 +9,24 @@
     <body>
         <div class="wrap">
             <h1>DivinEat : Home<h1>
+
+            <p>Merci d'avoir choisi le plugin DivinEat !</p>
+            <p>Il ne vous reste plus qu'à configurer votre page de réservation et vos horaires de réservations.</p>
+            <p><i>Pour configurer votre page de réservation : Allez dans l'onglet page et ajouter une page nommée</i> <b><a href="<?= esc_url(get_permalink(get_page_by_title('order'))) ?>">order</a></b>.</p><br>
+
             <?php
                 $alerts = actionHoraire();
                 if(!empty($alerts)){
                     foreach($alerts as $key => $alert){
-                        $class = ($key == "success")?"alert-success":"alert-warning";
+                        $class = ($key == "success")?"notice-success":"notice-warning";
                         ?>
-                        <div class="alert <?php echo $class; ?>">
-                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                            <?php echo $alert; ?>
+                        <div class="notice <?php echo $class; ?> is-dismissible">
+                            <p><?php echo $alert; ?></p>
                         </div>
                     <?php
                     }
                 }
             ?>
-
-            <p>Merci d'avoir choisi le plugin DivinEat !</p>
-            <p>Il ne vous reste plus qu'à configurer votre page de réservation et vos horaires de réservations.</p>
-            <p><i>Pour configurer votre page de réservation : Allez dans l'onglet page et ajouter une page nommée</i> <b>order</b>.</p>
 
             <h2>Horaire pour réservation<h2>
             <form action="" method="post" class="admin-form">

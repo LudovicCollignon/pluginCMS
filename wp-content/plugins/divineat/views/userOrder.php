@@ -6,10 +6,23 @@ global $DIVINEAT;
 
 $horaires = $wpdb->get_results("SELECT horaires FROM {$wpdb->prefix}dve_horaires");
 $menus = $wpdb->get_results("SELECT id, nom, prix FROM {$wpdb->prefix}dve_menus");
+
+$alerts = actionOrderUser();
+if(!empty($alerts)){
+    foreach($alerts as $key => $alert){
+        $class = ($key == "success")?"notice-success":"notice-warning";
+        ?>
+        <div class="notice <?php echo $class; ?> is-dismissible">
+            <p><?php echo $alert; ?></p>
+        </div>
+    <?php
+    }
+}
 ?>
+
 <h1>Reservez une table</h1>
 
-<form action="" method="post" class="">
+<form action="" method="post" class="comment-form" onsubmit="return confirm('Etes-vous sûr ?');">
     <p><label for="email_order">Email</label><input id="email_order" name="email_order" type="email" class=""></p>
 
     <p><label for="personnes_order">Nombre de personnes</label>
@@ -67,7 +80,7 @@ $menus = $wpdb->get_results("SELECT id, nom, prix FROM {$wpdb->prefix}dve_menus"
             <?php
             $i = 1;
             foreach($horaires as $horaire): ?>
-                <option value="<?= $i ?>"><?= $horaire->horaires ?></option>
+                <option value="<?= $horaire->horaires ?>"><?= $horaire->horaires ?></option>
             <?php 
             $i++;
             endforeach; ?>
@@ -88,3 +101,42 @@ if(is_home()){
 ?>
 
 <script type="text/javascript" src="<?= $DIVINEAT->_JS."user_order.js" ?>"></script>
+
+<?php
+function actionOrderUser(){
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        global $wpdb;
+        $alerts = [];
+
+        if(isset($_POST["email_order"]) && !empty($_POST["email_order"])){
+            $email_order = $_POST["email_order"];
+        } else {
+            $alerts["email_order"] = "Merci de renseigner une adresse email !";
+        }
+
+        $personnes_order = $_POST["personnes_order"];
+
+        $menus = [];
+        for($i = 1; $i <= $personnes_order; $i++){
+            $menus["id_menu".$i] = $_POST["menu".$i."_order"];
+        }
+
+        $horaires_order = $_POST["horaires_order"];
+
+        $insert = [
+            "email_user" => $email_order,
+            "horaire" => $horaires_order
+        ];
+        foreach($menus as $key => $id_menu){
+            $insert[$key] = $id_menu;
+        }
+
+        if(empty($alerts)){
+            $wpdb->insert("{$wpdb->prefix}dve_orders", $insert);
+
+            $alerts["success"] = "Le menu a été ajouté !";
+        }
+        
+        return $alerts;
+    }
+}

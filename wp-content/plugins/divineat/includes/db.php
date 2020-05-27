@@ -15,6 +15,7 @@ function dve_activation(){
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}dve_orders(
         id INT AUTO_INCREMENT PRIMARY KEY,
         email_user VARCHAR(55),
+        horaire VARCHAR(55),
         id_menu1 INT,
         id_menu2 INT,
         id_menu3 INT,
