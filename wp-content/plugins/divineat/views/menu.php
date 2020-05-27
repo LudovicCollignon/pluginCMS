@@ -23,6 +23,7 @@
                     }
                 }
             ?>
+            <h2>Ajouter un menu<h2>
             <form action="" method="post" class="admin-form">
                 <p><label for="nom_menu">Nom</label><input id="nom_menu" name="nom_menu" type="text" class="form-control"></p>
                 <p><label for="entree_menu">Entrée</label><input id="entree_menu" name="entree_menu" type="text" class="form-control"></p>
@@ -35,6 +36,7 @@
             <br><br>
 
             <?php $menus = getMenu(); ?>
+            <h2>Liste des menus<h2>
             <div class="table-wrapper">
                 <table class="admin-table">
                     <tr>

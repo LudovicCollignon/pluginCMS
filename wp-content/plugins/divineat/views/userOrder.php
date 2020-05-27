@@ -4,7 +4,7 @@ get_header();
 global $wpdb;
 global $DIVINEAT;
 
-$horaires = $wpdb->get_results("SELECT horaire FROM {$wpdb->prefix}dve_orders where disponible != 'false'");
+$horaires = $wpdb->get_results("SELECT horaires FROM {$wpdb->prefix}dve_horaires");
 $menus = $wpdb->get_results("SELECT id, nom, prix FROM {$wpdb->prefix}dve_menus");
 ?>
 <h1>Reservez une table</h1>
@@ -67,7 +67,7 @@ $menus = $wpdb->get_results("SELECT id, nom, prix FROM {$wpdb->prefix}dve_menus"
             <?php
             $i = 0;
             foreach($horaires as $horaire): ?>
-                <option value="<?= $i ?>"><?= $horaire->horaire ?></option>
+                <option value="<?= $i ?>"><?= $horaire->horaires ?></option>
             <?php 
             $i++;
             endforeach; ?>

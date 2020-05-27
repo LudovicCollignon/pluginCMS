@@ -45,3 +45,5 @@ function DivinEat_init(){
 
 // DB generate tables
 include_once plugin_dir_path(__FILE__)."includes/db.php";
+register_activation_hook(__FILE__, "dve_activation");
+register_deactivation_hook(__FILE__, "dve_deactivation");
