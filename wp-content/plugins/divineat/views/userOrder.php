@@ -65,7 +65,7 @@ $menus = $wpdb->get_results("SELECT id, nom, prix FROM {$wpdb->prefix}dve_menus"
     <p><label for="horaires_order">Horaire</label>
         <select name="horaires_order" id="horaires_order">
             <?php
-            $i = 0;
+            $i = 1;
             foreach($horaires as $horaire): ?>
                 <option value="<?= $i ?>"><?= $horaire->horaires ?></option>
             <?php 
@@ -78,6 +78,8 @@ $menus = $wpdb->get_results("SELECT id, nom, prix FROM {$wpdb->prefix}dve_menus"
 </form>
 
 <?php
+get_template_part( 'template-parts/footer-menus-widgets' );
+
 if(is_home()){
     get_footer("home");
 } else {
