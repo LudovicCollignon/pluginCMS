@@ -10,8 +10,9 @@
         <div class="wrap">
             <h1>DivinEat : Gestion des menus<h1>
             <?php
-                $alerts = actionMenu();
-                if(!empty($alerts)){
+                include_once($DIVINEAT->_INC."class.menu.php");
+                $alerts = Menu::actionMenu();
+                if(!empty($alerts)) {
                     foreach($alerts as $key => $alert){
                         $class = ($key == "success")?"notice-success":"notice-warning";
                         ?>
@@ -34,7 +35,7 @@
             
             <br><br>
 
-            <?php $menus = getMenu(); ?>
+            <?php $menus = DB_Manager::getItemsByTableName('menus'); ?>
             <h2>Liste des menus<h2>
             <div class="table-wrapper">
                 <table class="admin-table">
@@ -72,78 +73,3 @@
         </div>
     </body>
 </html>
-
-<?php
-function actionMenu(){
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        global $wpdb;
-        $alerts = [];
-
-        if(isset($_POST["add"]) || isset($_POST["edit"])){
-            if(isset($_POST["nom_menu"]) && !empty($_POST["nom_menu"])){
-                $nom = $_POST["nom_menu"];
-            } else {
-                $alerts["nom"] = "Merci de renseigner le nom du menu !";
-            }
-    
-            if(isset($_POST["entree_menu"]) && !empty($_POST["entree_menu"])){
-                $entree = $_POST["entree_menu"];
-            } else {
-                $alerts["entree"] = "Merci de renseigner l'entrée du menu !";
-            }
-    
-            if(isset($_POST["plat_menu"]) && !empty($_POST["plat_menu"])){
-                $plat = $_POST["plat_menu"];
-            } else {
-                $alerts["plat"] = "Merci de renseigner le plat du menu !";
-            }
-    
-            if(isset($_POST["dessert_menu"]) && !empty($_POST["dessert_menu"])){
-                $dessert = $_POST["dessert_menu"];
-            } else {
-                $alerts["dessert"] = "Merci de renseigner le dessert du menu !";
-            }
-    
-            if(isset($_POST["prix_menu"]) && !empty($_POST["prix_menu"])){
-                $prix = $_POST["prix_menu"];
-            } else {
-                $alerts["prix"] = "Merci de renseigner un prix au menu !";
-            }
-
-            if(empty($alerts)){
-                if(isset($_POST["add"])){
-                    $wpdb->insert("{$wpdb->prefix}dve_menus", array(
-                        "nom" => $nom,
-                        "entree" => $entree,
-                        "plat" => $plat,
-                        "dessert" => $dessert,
-                        "prix" => $prix
-                    ));
-                    $alerts["success"] = "Le menu a été ajouté !";
-                } else {
-                    $wpdb->update($wpdb->prefix."dve_menus", array(
-                        "nom" => $nom,
-                        "entree" => $entree,
-                        "plat" => $plat,
-                        "dessert" => $dessert,
-                        "prix" => $prix
-                    ), array('id' => $_POST["id_menu"]));
-                    $alerts["success"] = "Le menu a été modifié !";
-                }
-            }
-        } else if(isset($_POST["destroy"])){
-            $wpdb->delete($wpdb->prefix."dve_menus", array('id' => $_POST["id_menu"]));
-            $alerts["success"] = "Le menu a été supprimé !";
-        }
-        
-        return $alerts;
-    }
-}
-
-function getMenu(){
-    global $wpdb;
-    $select = "select * from {$wpdb->prefix}dve_menus";
-    $resultats = $wpdb->get_results($select);
-
-    return $resultats;
-}

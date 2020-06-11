@@ -48,3 +48,15 @@
     border-color: #367fa9;
     color: #fff;
 }
+
+.btn-cancel {
+    background-color: #98a0a5;
+    border-color: #98a0a5;
+    color: #fff;
+}
+
+.btn-disbabled {
+    background-color: #98a0a5;
+    border-color: #98a0a5;
+    color: rgb(70, 70, 70);
+}
