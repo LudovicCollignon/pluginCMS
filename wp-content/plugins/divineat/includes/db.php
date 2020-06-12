@@ -9,7 +9,7 @@ function dve_activation(){
         entree VARCHAR(255) NOT NULL, 
         plat VARCHAR(255), 
         dessert VARCHAR(255),
-        prix FLOAT);"
+        prix DOUBLE);"
     );
     
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}dve_horaires(
@@ -27,15 +27,15 @@ function dve_activation(){
     );
 
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}dve_menu_order(
-        id INT AUTO_INCREMENT PRIMARY KEY, 
+        id INT AUTO_INCREMENT PRIMARY KEY,
         menu_id INT NOT NULL,
         order_id INT NOT NULL,
-        FOREIGN KEY (menu_id) REFERENCES {$wpdb->prefix}dve_menus(id),
-        FOREIGN KEY (order_id) REFERENCES {$wpdb->prefix}dve_orders(id));"
+        FOREIGN KEY (order_id) REFERENCES {$wpdb->prefix}dve_orders(id),
+        FOREIGN KEY (menu_id) REFERENCES {$wpdb->prefix}dve_menus(id));"
     );
 }
 
-// Drop table (Deactivate plugin)
+// Drop table (deactivate plugin)
 function dve_deactivation(){
     global $wpdb;
     

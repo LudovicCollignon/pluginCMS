@@ -29,7 +29,7 @@
                 <p><label for="entree_menu">Entrée</label><input id="entree_menu" name="entree_menu" type="text" class="form-control"></p>
                 <p><label for="plat_menu">Plat</label><input id="plat_menu" name="plat_menu" type="text" class="form-control"></p>
                 <p><label for="dessert_menu">Dessert</label><input id="dessert_menu" name="dessert_menu" type="text" class="form-control"></p>
-                <p><label for="prix_menu">Prix</label><input id="prix_menu" name="prix_menu" type="number" class="form-control"></p>
+                <p><label for="prix_menu">Prix</label><input id="prix_menu" name="prix_menu" step="0.01" type="number" class="form-control"></p>
                 <input name="add" type="submit" class="btn btn-primary" value="Ajouter">
             </form>
             
@@ -58,7 +58,7 @@
                                 <td><input type="text" name="entree_menu" value="<?= $menu->entree ?>"></td>
                                 <td><input type="text" name="plat_menu" value="<?= $menu->plat ?>"></td>
                                 <td><input type="text" name="dessert_menu" value="<?= $menu->dessert ?>"></td>
-                                <td><input type="number" name="prix_menu" value="<?= $menu->prix ?>"></td>
+                                <td><input type="number" name="prix_menu" step="0.01" value="<?= $menu->prix ?>"></td>
                                 <td>
                                     <input name="edit" type="submit" class="btn btn-edit" value="Modifier">
                                     <input name="destroy" type="submit" class="btn btn-remove" value="Supprimer">
