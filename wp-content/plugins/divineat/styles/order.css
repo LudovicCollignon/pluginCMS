@@ -1,0 +1,11 @@
+.order {
+    width: 50em;
+    margin: auto;
+    padding-top: 15px;
+}
+.order > h1 {
+    text-align: center;
+}
+.order > button {
+    text-align: center;
+}
