@@ -1,142 +1,82 @@
-<?php 
-get_header();
-
-global $wpdb;
-global $DIVINEAT;
-
-$horaires = $wpdb->get_results("SELECT horaires FROM {$wpdb->prefix}dve_horaires");
-$menus = $wpdb->get_results("SELECT id, nom, prix FROM {$wpdb->prefix}dve_menus");
-
-$alerts = actionOrderUser();
-if(!empty($alerts)){
-    foreach($alerts as $key => $alert){
-        $class = ($key == "success")?"notice-success":"notice-warning";
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php 
+            global $DIVINEAT;
+            echo "<link rel='stylesheet' href='".$DIVINEAT->_STYLE."style.css' type='text/css' media='all'>";
         ?>
-        <div class="notice <?php echo $class; ?> is-dismissible">
-            <p><?php echo $alert; ?></p>
-        </div>
-    <?php
-    }
-}
-?>
+        <script type="text/javascript" src="<?= $DIVINEAT->_JS."orders.js" ?>"></script>
+    </head>
+    <body>
+        <?php
+            get_header();
+        ?>
 
-<h1>Reservez une table</h1>
-
-<form action="" method="post" class="comment-form" onsubmit="return confirm('Etes-vous sûr ?');">
-    <p><label for="email_order">Email</label><input id="email_order" name="email_order" type="email" class=""></p>
-
-    <p><label for="personnes_order">Nombre de personnes</label>
-        <select name="personnes_order" id="personnes_order" onchange="addInputMenu(this.value)">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-        </select>
-    </p>
-
-    <!-- Menus -->
-    <p><label for="menu1_order">Choix du premier menu</label>
-        <select name="menu1_order" id="menu1_order">
+        <div class="order">
             <?php
-            foreach($menus as $menu): ?>
-                <option value="<?= $menu->id ?>"><?= $menu->nom." - ".$menu->prix."€" ?></option>
-            <?php 
-            endforeach; ?>
-        </select>
-    </p>
+                include_once($DIVINEAT->_INC."class.order.php");
+                $alerts = Order::actionOrder();
+                if(!empty($alerts)){
+                    foreach($alerts as $key => $alert){
+                        $class = ($key == "success")?"alert-success":"alert-warning";
+                        ?>
+                        <div class="alert <?php echo $class; ?>">
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <?php echo $alert; ?>
+                        </div>
+                    <?php
+                    }
+                }
+            ?>
+            
+            <h1>Reservez une table</h1>
 
-    <p id="menu2"><label for="menu2_order">Choix du deuxième menu</label>
-        <select name="menu2_order" id="menu2_order">
-            <?php
-            foreach($menus as $menu): ?>
-                <option value="<?= $menu->id ?>"><?= $menu->nom." - ".$menu->prix."€" ?></option>
-            <?php 
-            endforeach; ?>
-        </select>
-    </p>
+            <form action='' method='post' class='admin-form' onsubmit="return confirm('Etes-vous sûr ?');">
+                <p><label for='user_prenom'>Prénom</label><input id='user_prenom' name='user_prenom' type='text' class='form-control'></p>
+                <p><label for='user_nom'>Nom</label><input id='user_nom' name='user_nom' type='text' class='form-control'></p>
+                <p><label for='user_mail'>Adresse mail (facultatif)</label><input id='user_mail' name='user_mail' type='text' class='form-control'></p>
+                <p>
+                    <label for='horaire_id'>Horaire</label>
+                    <select name='horaire_id' id='horaire_id' class='form-control'>
+                        <?php 
+                            $horaires = DB_Manager::getItemsByTableName('horaires');
+                            foreach ($horaires as $horaire):
+                        ?>
+                        <option value='<?= $horaire->id ?>'><?= $horaire->horaires ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </p>
 
-    <p id="menu3"><label for="menu3_order">Choix du troisième menu</label>
-        <select name="menu3_order" id="menu3_order">
-            <?php
-            foreach($menus as $menu): ?>
-                <option value="<?= $menu->id ?>"><?= $menu->nom." - ".$menu->prix."€" ?></option>
-            <?php 
-            endforeach; ?>
-        </select>
-    </p>
+                <?php 
+                    $menus = DB_Manager::getItemsByTableName('menus'); 
+                    $inc = 0;
+                ?>
+                <div id='add_menu_area'>
+                    <p><label for='order_menu1'>Menu 1 :</label>
+                        <select name='order_menu1' id='order_menu1' class='form-control'>
+                            <?php foreach ($menus as $menu): ?>
+                                <option value='<?= $menu->id ?>'><?= $menu->nom ?></option>
+                            <?php endforeach; ?>
+                        </select></p></div>
+                <br>
+                <div id='add_menu_btn' class='btn btn-default'>Ajouter un menu</div>
+                <div id='remove_menu_btn' class='btn btn-remove' style='display: none'>Supprimer le dernier menu</div>
+                <br>
+                <br>
+                <input name='add' type='submit' class='' value='Ajouter'>
+            </form>
+        </div>   
 
-    <p id="menu4"><label for="menu4_order">Choix du quatrième menu</label>
-        <select name="menu4_order" id="menu4_order">
-            <?php
-            foreach($menus as $menu): ?>
-                <option value="<?= $menu->id ?>"><?= $menu->nom." - ".$menu->prix."€" ?></option>
-            <?php 
-            endforeach; ?>
-        </select>
-    </p>
+        <?php
+        get_template_part( 'template-parts/footer-menus-widgets' );
 
-    <p><label for="horaires_order">Horaire</label>
-        <select name="horaires_order" id="horaires_order">
-            <?php
-            $i = 1;
-            foreach($horaires as $horaire): ?>
-                <option value="<?= $horaire->horaires ?>"><?= $horaire->horaires ?></option>
-            <?php 
-            $i++;
-            endforeach; ?>
-        </select>
-    </p> 
-
-    <input name="add" type="submit" class="btn btn-primary" value="Valider">
-</form>
-
-<?php
-get_template_part( 'template-parts/footer-menus-widgets' );
-
-if(is_home()){
-    get_footer("home");
-} else {
-    get_footer();
-}
-?>
-
-<script type="text/javascript" src="<?= $DIVINEAT->_JS."user_order.js" ?>"></script>
-
-<?php
-function actionOrderUser(){
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        global $wpdb;
-        $alerts = [];
-
-        if(isset($_POST["email_order"]) && !empty($_POST["email_order"])){
-            $email_order = $_POST["email_order"];
+        if(is_home()){
+            get_footer("home");
         } else {
-            $alerts["email_order"] = "Merci de renseigner une adresse email !";
+            get_footer();
         }
+        ?>
+    </body>
+</html>
 
-        $personnes_order = $_POST["personnes_order"];
-
-        $menus = [];
-        for($i = 1; $i <= $personnes_order; $i++){
-            $menus["id_menu".$i] = $_POST["menu".$i."_order"];
-        }
-
-        $horaires_order = $_POST["horaires_order"];
-
-        $insert = [
-            "email_user" => $email_order,
-            "horaire" => $horaires_order
-        ];
-        foreach($menus as $key => $id_menu){
-            $insert[$key] = $id_menu;
-        }
-
-        if(empty($alerts)){
-            $wpdb->insert("{$wpdb->prefix}dve_orders", $insert);
-
-            $alerts["success"] = "Le menu a été ajouté !";
-        }
-        
-        return $alerts;
-    }
-}
+<script> orders(); </script>
