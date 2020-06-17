@@ -33,6 +33,7 @@ class DivinEat_Setup {
     private function include_files() {
         include_once($this->_INC."functions.php");
         include_once($this->_INC."loadUserOrder.php");
+        include_once($this->_INC."class.db-manager.php");
     }
 }
 
